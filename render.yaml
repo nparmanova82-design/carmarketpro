@@ -1,0 +1,30 @@
+# Render Blueprint: New → Blueprint → выбрать репозиторий
+databases:
+  - name: carmarket-db
+    plan: free
+    databaseName: carmarket
+    user: carmarket
+
+services:
+  - type: web
+    name: carmarket-pro
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/schema/
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: carmarket-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: localhost
+      - key: DJANGO_SUPERUSER_USERNAME
+        sync: false
+      - key: DJANGO_SUPERUSER_EMAIL
+        sync: false
+      - key: DJANGO_SUPERUSER_PASSWORD
+        sync: false
